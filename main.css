@@ -10,3 +10,9 @@ p{
   color : white;
   height:500px;
 }
+@font-face {
+    font-family: 'Pretty_Left_handed';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_09@1.0/Pretty_Left_handed.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
