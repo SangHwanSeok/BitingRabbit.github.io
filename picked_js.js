@@ -454,6 +454,9 @@ const component = new Vue({
         else {
           this.applyAllAnimation(currentPos, refname);
         }
+          
+        //새로고침시 스크롤 맨 위로
+        history.scrollRestoration = "manual";
       });
     }
   }
