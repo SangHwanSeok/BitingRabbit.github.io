@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!-- 2021.02.07 AWS Lambda API Gateway DynamoDB 활용 Web 게시판 만들기  -->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <title>Simple Board</title>
+    </head>
+    <body onLoad="get()">
+        <script>
+            $(document).ready(function(){
+            document.getElementById("header").innerHTML='<object type="text/html" data="header2.html"></object>';
+        })
+        </script>
+        <script>
+            // html dom 이 다 로딩된 후 실행된다.
+            $(document).ready(function(){
+                // menu 클래스 바로 하위에 있는 a 태그를 클릭했을때
+                $(".menu>a").click(function(){
+                    var submenu = $(this).next("ul");
+         
+                    // submenu 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
+                    if( submenu.is(":visible") ){
+                        submenu.slideUp();
+                    }else{
+                        submenu.slideDown();
+                    }
+                });
+            });
+        </script>
+        
+        
+        출처: https://stove99.tistory.com/103 [스토브 훌로구]
+        <header id = "header">
+              
+        </header>
+        <table id="articles" border="1">
+            <caption>Hellow</caption>
+        </table>
+        <script>
+            function isEmpty(value){
+
+if(value == null || value.length === 0) {
+
+       return "입력하지 않음";
+
+ } else{
+
+        return value;
+
+ }
+
+}
+            /* HTML노드 추가 함수 */
+            function createNode(element){
+                return document.createElement(element);
+            }
+            /* HTML노드에 child 추가 함수 */
+            function append(parent, el){
+                return parent.appendChild(el);
+            }
+ 
+            var elem = document.getElementById('articles');
+            /* API 게이트웨이로 게시글 정보 가져오는 함수 */ 
+            const URL = "https://09cgo4m6ua.execute-api.us-east-2.amazonaws.com/testtbl_api_ver1/article_resource";
+            function get(){
+                fetch(URL, {
+                    method: "GET",
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                }).then(resp => resp.json())
+                .then(function(data){
+                    let article_arr = data.Items;
+                    return article_arr.map(function(article_indiv){
+                        let tr = createNode('tr'); 
+                        let td1 = createNode('td');
+                        let td2 = createNode('td');
+                        let td3 = createNode('td');
+                        
+                        td1.innerHTML += isEmpty(article_indiv.title);
+                        td2.innerHTML += isEmpty(article_indiv.context);
+                        td3.innerHTML += isEmpty(article_indiv.tail);
+
+                      append(tr, td1);
+                      append(tr, td2);
+                      append(tr, td3);
+                      append(elem, tr);
+ 
+                    })
+                })
+                .catch(err => console.log(err))
+
+            }
+        </script>
+    </body>
+</html>
